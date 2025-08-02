@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <title>Paneli i Administratorit</title>
+    <link rel="stylesheet" href="style.css"> <!-- Nëse ke CSS të ndarë -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section id="admin-login-page" class="admin-login">
+        <h2>Hyr në Panelin e Adminit</h2>
+        <form id="login-form">
+            <input type="password" id="password-input" placeholder="Shkruaj fjalëkalimin" required>
+            <button type="submit" class="action-button">Hyr</button>
+            <p id="login-error" class="error-message hidden"></p>
+        </form>
+    </section>
+
+    <section id="admin-panel-page" class="admin-page hidden">
+        <div class="admin-header">
+            <h2>Paneli i Administratorit</h2>
+            <a href="index.html" class="home-button">Kthehu te Faqja Kryesore</a>
+        </div>
+
+        <form id="date-form" class="admin-form">
+            <h3>Vendos Datën</h3>
+            <input type="date" id="date-input">
+            <button type="submit" class="action-button">Përditëso Datën</button>
+        </form>
+        
+        <form id="publish-form" class="admin-form">
+            <h3>Publiko Ndeshje të Re</h3>
+            <input type="text" id="match-time" placeholder="Ora (psh. 21:00)" required>
+            <input type="text" id="match-title" placeholder="Titulli (psh. Real Madrid vs Barcelona)" required>
+            <input type="text" id="match-url" placeholder="URL e transmetimit" required>
+            <button type="submit" class="action-button publish">Publiko Ndeshjen</button>
+        </form>
+
+        <div>
+            <h3>Ndeshjet e Publikuara</h3>
+            <div id="matches-grid-admin" class="matches-grid">
+                <!-- Kartat e menaxhimit të ndeshjeve do të shtohen këtu -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- FJALËKALIMI I ADMINIT ---
+        const ADMIN_PASSWORD = "password123";
+
+        // --- Elementet e DOM ---
+        const adminLoginPage = document.getElementById('admin-login-page');
+        const adminPanelPage = document.getElementById('admin-panel-page');
+        const matchesGridAdmin = document.getElementById('matches-grid-admin');
+        const loginForm = document.getElementById('login-form');
+        const passwordInput = document.getElementById('password-input');
+        const loginError = document.getElementById('login-error');
+        const dateForm = document.getElementById('date-form');
+        const dateInput = document.getElementById('date-input');
+        const publishForm = document.getElementById('publish-form');
+        const matchTimeInput = document.getElementById('match-time');
+        const matchTitleInput = document.getElementById('match-title');
+        const matchUrlInput = document.getElementById('match-url');
+
+        // --- State i Aplikacionit ---
+        let state = {
+            matches: JSON.parse(localStorage.getItem('matches')) || [],
+            displayDate: localStorage.getItem('displayDate') || 'Data nuk është caktuar'
+        };
+
+        // --- Funksionet për Ruajtje ---
+        const saveMatches = () => {
+            localStorage.setItem('matches', JSON.stringify(state.matches));
+        };
+
+        const saveDate = () => {
+            localStorage.setItem('displayDate', state.displayDate);
+        };
+
+        // --- Funksionet për Renderim ---
+        const renderMatches = () => {
+            matchesGridAdmin.innerHTML = '';
+            state.matches.forEach(match => {
+                const cardAdmin = document.createElement('div');
+                cardAdmin.className = 'match-card';
+                cardAdmin.innerHTML = `
+                    <div class="time">${match.time}</div>
+                    <div class="title">${match.title}</div>
+                    <button class="delete-button" data-id="${match.id}">Fshij</button>
+                `;
+                matchesGridAdmin.appendChild(cardAdmin);
+            });
+        };
+
+        // --- Logjika e Aplikacionit ---
+        const addMatch = (time, title, url) => {
+            const newMatch = {
+                id: Date.now(),
+                time,
+                title,
+                url
+            };
+            state.matches.push(newMatch);
+            saveMatches();
+            renderMatches();
+        };
+
+        const deleteMatch = (matchId) => {
+            state.matches = state.matches.filter(match => match.id !== matchId);
+            saveMatches();
+            renderMatches();
+        };
+
+        const updateDate = (newDate) => {
+            const formattedDate = new Date(newDate + 'T00:00:00').toLocaleDateString('sq-AL', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            state.displayDate = formattedDate;
+            saveDate();
+        };
+
+        // --- Event Listeners ---
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                adminLoginPage.classList.add('hidden');
+                adminPanelPage.classList.remove('hidden');
+                passwordInput.value = '';
+                loginError.classList.add('hidden');
+            } else {
+                loginError.textContent = 'Fjalëkalim i gabuar!';
+                loginError.classList.remove('hidden');
+                passwordInput.value = '';
+            }
+        });
+
+        dateForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (dateInput.value) {
+                updateDate(dateInput.value);
+            }
+        });
+
+        publishForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            addMatch(matchTimeInput.value, matchTitleInput.value, matchUrlInput.value);
+            publishForm.reset();
+        });
+
+        matchesGridAdmin.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-button')) {
+                const matchId = Number(e.target.dataset.id);
+                deleteMatch(matchId);
+            }
+        });
+
+        // --- Inicializimi ---
+        const init = () => {
+            dateInput.value = new Date().toISOString().split('T')[0];
+            renderMatches();
+        };
+
+        init();
+    </script>
+</body>
+</html>

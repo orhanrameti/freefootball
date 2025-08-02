@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestream Footballi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/admin.html">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Seksioni i Faqes Kryesore -->
+        <section id="home-page">
+            <header class="header">
+                <h1>Livestream Footballi</h1>
+                <div class="header-right">
+                    <span id="date-display-home" class="date-display"></span>
+                    <!-- Butoni Admin u hoq -->
+                </div>
+            </header>
+            <main>
+                <div id="matches-grid-home" class="matches-grid">
+                    <!-- Kartat e ndeshjeve do të shtohen këtu nga JavaScript -->
+                </div>
+                <p id="no-matches-msg" class="no-matches hidden">Nuk ka asnjë ndeshje të publikuar për momentin.</p>
+            </main>
+        </section>
+    </div>
+    <script>
+        // --- Logjika (JavaScript) vetëm për faqen kryesore ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateDisplayHome = document.getElementById('date-display-home');
+            const matchesGridHome = document.getElementById('matches-grid-home');
+            const noMatchesMsg = document.getElementById('no-matches-msg');
+
+            let state = {
+                matches: JSON.parse(localStorage.getItem('matches')) || [],
+                displayDate: localStorage.getItem('displayDate') || 'Data nuk është caktuar'
+            };
+
+            const renderMatches = () => {
+                matchesGridHome.innerHTML = '';
+                if (state.matches.length === 0) {
+                    noMatchesMsg.classList.remove('hidden');
+                } else {
+                    noMatchesMsg.classList.add('hidden');
+                }
+                state.matches.forEach(match => {
+                    const cardHome = document.createElement('div');
+                    cardHome.className = 'match-card';
+                    cardHome.innerHTML = `
+                        <div class="time">${match.time}</div>
+                        <div class="title">${match.title}</div>
+                        <a href="${match.url}" target="_blank" rel="noopener noreferrer" class="watch-button">WATCH</a>
+                    `;
+                    matchesGridHome.appendChild(cardHome);
+                });
+            };
+
+            const renderDate = () => {
+                dateDisplayHome.textContent = state.displayDate;
+            };
+
+            // Inicializimi
+            renderDate();
+            renderMatches();
+        });
+    </script>
+</body>
+</html>

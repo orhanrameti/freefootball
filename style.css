@@ -1,0 +1,202 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.app-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Fshehja e seksioneve */
+.hidden {
+    display: none;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    margin: 0;
+    color: #1a73e8;
+    font-size: 1.8em;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.date-display {
+    font-size: 1.1em;
+    font-weight: 500;
+    background-color: #e8f0fe;
+    padding: 8px 15px;
+    border-radius: 8px;
+    color: #1a73e8;
+}
+
+.admin-button, .home-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.admin-button:hover, .home-button:hover {
+    background-color: #5a6268;
+}
+
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.match-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.match-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.match-card .time {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: #e67e22;
+}
+
+.match-card .title {
+    font-size: 1.15em;
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.watch-button, .delete-button, .action-button {
+    color: white;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.watch-button:hover, .action-button:hover {
+    transform: scale(1.03);
+}
+
+.watch-button {
+    background: linear-gradient(45deg, #28a745, #218838);
+}
+
+.delete-button {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+}
+
+.action-button {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+}
+
+.action-button.publish {
+    background: linear-gradient(45deg, #17a2b8, #117a8b);
+}
+
+.no-matches {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 50px;
+    color: #6c757d;
+}
+
+.admin-login, .admin-page {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.admin-login {
+    max-width: 450px;
+    margin: 60px auto;
+    text-align: center;
+}
+
+.admin-login h2, .admin-page h2, .admin-page h3 {
+    color: #343a40;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.admin-page {
+    max-width: 500px;
+    margin: 40px auto;
+}
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input[type="text"], input[type="password"], input[type="date"] {
+    padding: 14px;
+    font-size: 1em;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.error-message {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 15px;
+}
